@@ -5,10 +5,13 @@ import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @Table(name = "foods")
 @Entity
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
@@ -36,15 +39,20 @@ public class Food {
     Category category;
 
     @Column(name = "best_seller")
-    Boolean bestSeller;
+    Boolean bestSeller = false;
 
     @Column(name = "active")
     Boolean active;
 
 
-    @ManyToOne
-    @Column(name = "section_id")
-    Section section;
+    @Builder.Default
+    @ManyToMany
+    @JoinTable(
+            name = "food_sections",
+            joinColumns = @JoinColumn(name = "food_id"),
+            inverseJoinColumns = @JoinColumn(name = "section_id")
+    )
+    Set<Section> sections = new HashSet<>();
 
     @Column(name = "created_at")
     LocalDateTime createdAt;
