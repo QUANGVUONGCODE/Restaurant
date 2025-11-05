@@ -8,6 +8,8 @@ import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
+import java.util.List;
+
 @Data
 @Builder
 @AllArgsConstructor
@@ -30,7 +32,10 @@ public class FoodRequest {
     @JsonProperty(value = "category_id", required = true)
     Long categoryId;
 
-    @JsonProperty(value = "brand_id", required = true)
-    Long sectionId;
+    @JsonProperty(value = "section_ids", required = true)
+    List<Long> sectionIds;
+
+    Boolean bestSeller;
+    Boolean active;
 
 }

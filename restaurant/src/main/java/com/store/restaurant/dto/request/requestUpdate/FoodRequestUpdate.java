@@ -3,9 +3,12 @@ package com.store.restaurant.dto.request.requestUpdate;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.List;
 
 @Data
 @Builder
@@ -14,6 +17,7 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class FoodRequestUpdate {
 
+    @NotBlank(message = "NOT_BLANK_NAME")
     @Size(min = 3, max = 200, message = "NAME_SIZE")
     String name;
 
@@ -25,9 +29,12 @@ public class FoodRequestUpdate {
 
     String description;
 
-    @JsonProperty(value = "category_id")
+    @JsonProperty(value = "category_id", required = true)
     Long categoryId;
 
-    @JsonProperty(value = "section_id")
-    Long sectionId;
+    @JsonProperty(value = "section_ids", required = true)
+    List<Long> sectionIds;
+
+    Boolean bestSeller;
+    Boolean active;
 }

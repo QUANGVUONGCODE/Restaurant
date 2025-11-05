@@ -1,29 +1,25 @@
 package com.store.restaurant.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import java.util.HashSet;
-import java.util.Set;
-
-@Table(name = "sections")
 @Entity
-@Data
+@Table(name = "roles")
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class Section {
+public class Role {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     Long id;
 
-    @Column(name = "name", nullable = false,unique = true)
+    @Column(name = "name", nullable = false, length = 50)
     String name;
 
-    @ManyToMany(mappedBy = "sections")
-    @JsonIgnore
-    Set<Food> foods = new HashSet<>();
+    @Column(name = "description", length = 100)
+    String description;
 }
