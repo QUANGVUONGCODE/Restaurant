@@ -1,8 +1,11 @@
 package com.store.restaurant.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
+
+import java.util.Set;
 
 @Entity
 @Table(name = "roles")
@@ -20,6 +23,4 @@ public class Role {
     @Column(name = "name", nullable = false, length = 50)
     String name;
 
-    @Column(name = "description", length = 100)
-    String description;
 }

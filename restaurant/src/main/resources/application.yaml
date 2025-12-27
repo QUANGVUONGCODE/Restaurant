@@ -7,7 +7,7 @@ spring:
   application:
     name: restaurant
   datasource:
-    url: "jdbc:mysql://localhost:3306/restaurant?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC"
+    url: "jdbc:mysql://localhost:3306/restaurant?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=Asia/Ho_Chi_Minh"
     driver-class-name: "com.mysql.cj.jdbc.Driver"
     username: root
     password: root
@@ -25,3 +25,15 @@ api:
 
 app:
   upload-dir: uploads
+
+jwt:
+  signerKey: "rCUelIkPrg2cxFneAe1CeNF5ndX21RHJszJUIseX3UAzZZ7y4mjJCcc3TjrbMc2D"
+  valid-duration: 3600000
+  refresh-duration: 86400000
+
+vnpay:
+  pay-url: "https://sandbox.vnpayment.vn/paymentv2/vpcpay.html"
+  return-url: "${VNPAY_RETURN_URI:http://localhost:3000/payments/payment-callback}"
+  tmn-code: "ZJWEZFVW"
+  secret-key: "P5DFHH1IZ3D5PVTJHFRSIFX4YAK4AKY6"
+  api-url: "https://sandbox.vnpayment.vn/merchant_webapi/api/transaction"

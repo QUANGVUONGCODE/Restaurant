@@ -72,6 +72,9 @@ public class FoodImageService {
                             .build()
             );
             foodImages.add(foodImage);
+            if(foodImages.size() == 1){
+                foodService.updateFoodThumbnail(id, fileName);
+            }
         }
         return foodImages;
     }

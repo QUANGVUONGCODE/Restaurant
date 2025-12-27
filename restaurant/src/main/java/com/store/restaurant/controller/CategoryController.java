@@ -53,4 +53,11 @@ public class CategoryController {
                 .result("Category deleted successfully")
                 .build();
     }
+
+    @GetMapping("/count")
+    ApiResponse<Long> countAllCategories(){
+        return ApiResponse.<Long>builder()
+                .result(categoryService.countAllCategories())
+                .build();
+    }
 }

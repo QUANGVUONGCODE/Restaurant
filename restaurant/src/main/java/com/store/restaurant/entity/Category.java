@@ -1,6 +1,8 @@
 package com.store.restaurant.entity;
 
+
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 

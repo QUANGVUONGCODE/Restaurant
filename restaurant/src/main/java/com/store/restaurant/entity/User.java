@@ -1,12 +1,14 @@
 package com.store.restaurant.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import lombok.*;
 import lombok.experimental.FieldDefaults;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 @Table(name = "users")
@@ -56,6 +58,11 @@ public class User {
 
     @Column(name = "updated_at")
     LocalDateTime updatedAt;
+
+    @ManyToOne
+    @JoinColumn(name = "role_id")
+    Role role;
+
 
     @PrePersist
     public void prePersist() {

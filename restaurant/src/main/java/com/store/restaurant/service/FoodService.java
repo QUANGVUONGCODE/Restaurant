@@ -20,6 +20,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.experimental.FieldDefaults;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
@@ -57,7 +58,7 @@ public class FoodService {
         if (!sectionIds.isEmpty()) {
             List<Section> sections = sectionRepository.findAllById(sectionIds);
             if (sections.size() != sectionIds.size()) {
-                throw new AppException(ErrorCode.INVALID_ID);
+                throw new AppException(ErrorCode.INVALID_ID_SECTION);
             }
             food.setSections(new HashSet<>(sections));
         } else {
@@ -81,15 +82,12 @@ public class FoodService {
     }
 
     public FoodResponse updateFood(FoodRequestUpdate requestUpdate, Long id){
-        if (id == null) {
-            throw new AppException(ErrorCode.INVALID_ID);
-        }
+
 
         Food food = foodRepository.findById(id).orElseThrow(
                 () -> new AppException(ErrorCode.INVALID_ID)
         );
 
-        // only update category when a categoryId is provided to avoid passing null to findById
         if (requestUpdate != null && requestUpdate.getCategoryId() != null) {
             Category category = categoryRepository.findById(requestUpdate.getCategoryId())
                     .orElseThrow(() -> new AppException(ErrorCode.INVALID_ID));
@@ -114,12 +112,20 @@ public class FoodService {
     }
 
     public void deleteFood(Long id){
-        if(!foodRepository.existsById(id)){
-            throw new AppException(ErrorCode.INVALID_ID);
-        }
-        foodRepository.deleteById(id);
+//        if(!foodRepository.existsById(id)){
+//            throw new AppException(ErrorCode.INVALID_ID);
+//        }
+//        foodImageRepository.deleteAll(
+//                foodImageRepository.findByFoodId(id)
+//        );
+        Food food = foodRepository.findById(id).orElseThrow(
+                () -> new AppException(ErrorCode.INVALID_ID)
+        );
+        food.setActive(false);
+        foodRepository.save(food);
     }
 
+    @PreAuthorize("permitAll()")
     public List<Food> getFoodsByIds(List<Long> foodIds){
         return foodRepository.findByIdIn(foodIds);
     }
@@ -128,8 +134,8 @@ public class FoodService {
         return foodImageRepository.findByFoodId(id);
     }
 
-    public FoodImage getFoodImageByThumbnail(String thumbanail){
-        return foodImageRepository.findByUrl(thumbanail).orElseThrow(
+    public FoodImage getFoodImageByThumbnail(String thumbnail){
+        return foodImageRepository.findByUrl(thumbnail).orElseThrow(
                 () -> new AppException(ErrorCode.INVALID_THUMBNAIL)
         );
     }
@@ -147,5 +153,17 @@ public class FoodService {
             throw new AppException(ErrorCode.MAXIMUM_IMAGE_COUNT_EXCEEDED);
         }
         return foodImageRepository.save(foodImage);
+    }
+
+    public void updateFoodThumbnail(Long foodId, String thumbnailUrl) {
+        Food food = foodRepository.findById(foodId).orElseThrow(
+                () -> new AppException(ErrorCode.INVALID_ID)
+        );
+        food.setThumbnail(thumbnailUrl);
+        foodRepository.save(food);
+    }
+
+    public Long countAllFoods(){
+        return foodRepository.count();
     }
 }

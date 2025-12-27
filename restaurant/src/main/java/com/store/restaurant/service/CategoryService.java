@@ -56,4 +56,8 @@ public class CategoryService {
         }
         categoryRepository.deleteById(id);
     }
+
+    public Long countAllCategories(){
+        return categoryRepository.count();
+    }
 }

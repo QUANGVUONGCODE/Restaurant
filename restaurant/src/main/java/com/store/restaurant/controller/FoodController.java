@@ -75,7 +75,7 @@ public class FoodController {
         );
         Page<FoodResponse> foodPage = foodService.getAllFoods(keyword,categoryId,sectionId,pageRequest);
         List<FoodResponse> foods = foodPage.getContent();
-        int totalPages = foodPage.getNumber() + 1;
+        int totalPages = foodPage.getNumber();
         return ApiResponse.<FoodListResponse>builder()
                 .result(FoodListResponse.builder()
                         .foodResponseList(foods)
@@ -146,4 +146,17 @@ public class FoodController {
         }
     }
 
+    @GetMapping("/imageFoods/{foodId}")
+    public ApiResponse<List<FoodImage>> getFoodImages(@PathVariable Long foodId){
+        return ApiResponse.<List<FoodImage>>builder()
+                .result(foodService.getFoodImageById(foodId))
+                .build();
+    }
+
+    @GetMapping("/count")
+    public ApiResponse<Long> countAllFoods(){
+        return ApiResponse.<Long>builder()
+                .result(foodService.countAllFoods())
+                .build();
+    }
 }
