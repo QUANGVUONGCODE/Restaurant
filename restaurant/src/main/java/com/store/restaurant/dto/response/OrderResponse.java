@@ -61,4 +61,7 @@ public class OrderResponse {
 
     @JsonProperty("payment")
     Payment payment;
+
+    @JsonProperty("vnp_txn_ref")
+    String vnpTxnRef;
 }

@@ -143,7 +143,7 @@ public class SercurityConfig {
                         .hasAnyRole(RolePlay.ADMIN.name(), RolePlay.USER.name())
                         .requestMatchers(HttpMethod.POST, api + paymentEntryPoint +"/query")
                         .hasAnyRole(RolePlay.ADMIN.name(), RolePlay.USER.name())
-                        .requestMatchers(HttpMethod.POST, api + paymentEntryPoint + "/result" + "/**")
+                        .requestMatchers(HttpMethod.POST, api + paymentEntryPoint + "/result/{txnRef}")
                         .hasAnyRole(RolePlay.ADMIN.name(), RolePlay.USER.name())
 
                         //user

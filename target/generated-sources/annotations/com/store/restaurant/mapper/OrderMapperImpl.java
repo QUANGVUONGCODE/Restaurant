@@ -57,6 +57,7 @@ public class OrderMapperImpl implements OrderMapper {
         orderResponse.totalMoney( order.getTotalMoney() );
         orderResponse.active( order.getActive() );
         orderResponse.payment( order.getPayment() );
+        orderResponse.vnpTxnRef( order.getVnpTxnRef() );
 
         return orderResponse.build();
     }
@@ -84,6 +85,9 @@ public class OrderMapperImpl implements OrderMapper {
         }
         if ( orderRequest.getStatus() != null ) {
             order.setStatus( orderRequest.getStatus().name() );
+        }
+        if ( orderRequest.getVnpTxnRef() != null ) {
+            order.setVnpTxnRef( orderRequest.getVnpTxnRef() );
         }
     }
 }

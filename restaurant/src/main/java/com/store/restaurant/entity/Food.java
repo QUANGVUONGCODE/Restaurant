@@ -32,7 +32,7 @@ public class Food {
     @Column(name = "thumbnail")
     String thumbnail;
 
-    @Column(name = "description")
+    @Column(name = "description",columnDefinition = "LONGTEXT")
     String description;
 
     @ManyToOne

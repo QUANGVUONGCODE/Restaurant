@@ -43,6 +43,7 @@ public class OrderService {
     ReservationRepository reservationRepository;
     TableService tableService;
 
+
     public OrderResponse createOrder(OrderRequest request){
         User user = userRepository.findById(request.getUserId()).orElseThrow(
                 () -> new AppException(ErrorCode.INVALID_USER_ID)
@@ -193,24 +194,35 @@ public class OrderService {
         return orderMapper.mapToOrderResponse(order);
     }
 
-    public void deleteOrder(Long orderId){
+    public void deleteOrder(Long orderId) {
         Order order = orderRepository.findById(orderId).orElseThrow(
                 () -> new AppException(ErrorCode.INVALID_ORDER_ID)
         );
+
         order.setStatus(OrderStatus.CANCELLED.name());
         order.setActive(false);
+
+        // Kiểm tra xem có tồn tại Revervation không trước khi xóa
+        Revervation reservation = reservationRepository.findByOrderId(orderId);
+        if (reservation != null) {
+            reservationRepository.delete(reservation);
+        } else {
+            throw new AppException(ErrorCode.RESERVATION_NOT_FOUND);
+        }
+
         orderRepository.save(order);
     }
+
 
     public RevenueAndOrderCount getTotalOfMonth(int month, int year){
         LocalDateTime startOfMonth = LocalDateTime.of(year, month, 1,0,0,0,0);
         LocalDateTime endOfMonth = startOfMonth.plusMonths(1);
         List<Order> orders = orderRepository.findByOrderDateBetween(startOfMonth, endOfMonth);
         Long totalOrders = orders.stream()
-                .filter(order -> order.getStatus() != null && (order.getStatus().equals(OrderStatus.CANCELLED.name()) || order.getStatus().equals(OrderStatus.PENDING.name())))
+                .filter(order -> order.getStatus() != null && (order.getStatus().equals(OrderStatus.PAID.name()) || order.getStatus().equals(OrderStatus.COMPLETED.name())))
                 .count();
         Float totalMoney = orders.stream()
-                .filter(order -> order.getStatus() != null && (order.getStatus().equals(OrderStatus.CANCELLED.name()) || order.getStatus().equals(OrderStatus.PENDING.name())))
+                .filter(order -> order.getStatus() != null && (order.getStatus().equals(OrderStatus.PAID.name()) || order.getStatus().equals(OrderStatus.COMPLETED.name())))
                 .map(Order::getTotalMoney)
                 .reduce(0f, Float::sum);
         return new RevenueAndOrderCount(totalMoney, totalOrders);
@@ -256,6 +268,10 @@ public class OrderService {
         order.setStatus(OrderStatus.COMPLETED.name());
         orderRepository.save(order);
     }
+
+
+
+
 
     public List<OrderResponse> getOrdersForToday() {
         LocalDateTime startOfToday = LocalDateTime.now().toLocalDate().atStartOfDay();

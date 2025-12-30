@@ -42,4 +42,7 @@ public class OrderUpdateRequest {
 
     @JsonProperty("cart_items")
     List<CartRequest> cartItems;
+
+    @JsonProperty("vnp_txn_ref")
+    String vnpTxnRef;
 }

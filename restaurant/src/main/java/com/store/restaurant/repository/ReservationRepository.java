@@ -22,5 +22,9 @@ public interface ReservationRepository extends JpaRepository<Revervation, Long> 
                                                 @Param("startTime") LocalDateTime startTime,
                                                 @Param("endTime") LocalDateTime endTime);
 
+    @Query("SELECT r FROM Revervation r WHERE r.order.id = :orderId")
+    Revervation findByOrderId(@Param("orderId") Long orderId);
 
+    @Query("SELECT r FROM Revervation r WHERE r.order.id = :orderId")
+    Revervation deleteByOrderId(@Param("orderId") Long orderId);
 }

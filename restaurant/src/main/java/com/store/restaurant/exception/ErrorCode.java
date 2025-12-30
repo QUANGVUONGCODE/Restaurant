@@ -52,6 +52,7 @@ public enum ErrorCode {
     INVALID_TOKEN(1044, "Invalid token", HttpStatus.UNAUTHORIZED),
     JWT_ERROR(1045, "JWT error", HttpStatus.UNAUTHORIZED),
     USER_EXISTS(1046, "User exists", HttpStatus.BAD_REQUEST),
+    RESERVATION_NOT_FOUND(1047, "Reservation not found", HttpStatus.BAD_REQUEST),
     ;
 
 
